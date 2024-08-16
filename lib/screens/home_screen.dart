@@ -14,7 +14,11 @@ import 'package:user/widgets/my_bottom_navigation_bar.dart';
 
 class HomeScreen extends BaseRoute {
   final int? screenId;
-  HomeScreen({super.analytics, super.observer, super.routeName = 'HomeScreen', this.screenId});
+  HomeScreen(
+      {super.analytics,
+      super.observer,
+      super.routeName = 'HomeScreen',
+      this.screenId});
   @override
   _HomeScreenState createState() => _HomeScreenState(screenId: screenId);
 }
@@ -34,7 +38,8 @@ class _HomeScreenState extends BaseRouteState {
         observer: widget.observer,
       ),
       Container(),
-      OrderHistoryScreen(analytics: widget.analytics, observer: widget.observer),
+      OrderHistoryScreen(
+          analytics: widget.analytics, observer: widget.observer),
       UserProfileScreen(analytics: widget.analytics, observer: widget.observer),
     ];
 
@@ -50,51 +55,51 @@ class _HomeScreenState extends BaseRouteState {
               index: controller.tabIndex,
               children: _homeScreenItems,
             ),
-            bottomNavigationBar: MyBottomNavigationBar(
-              onTap: (value) {
-                if (value == 1) return Get.to(() => SearchScreen(analytics: widget.analytics, observer: widget.observer));
-                if (value == 2) {
-                  if (global.currentUser?.id == null) {
-                    return Get.to(() => LoginScreen(analytics: widget.analytics, observer: widget.observer));
-                  }
-                }
-                if (value == 3) {
-                  if (global.currentUser?.id == null) {
-                    return Get.to(() => LoginScreen(analytics: widget.analytics, observer: widget.observer));
-                  }
-                }
+            // bottomNavigationBar: MyBottomNavigationBar(
+            //   onTap: (value) {
+            //     if (value == 1) return Get.to(() => SearchScreen(analytics: widget.analytics, observer: widget.observer));
+            //     if (value == 2) {
+            //       if (global.currentUser?.id == null) {
+            //         return Get.to(() => LoginScreen(analytics: widget.analytics, observer: widget.observer));
+            //       }
+            //     }
+            //     if (value == 3) {
+            //       if (global.currentUser?.id == null) {
+            //         return Get.to(() => LoginScreen(analytics: widget.analytics, observer: widget.observer));
+            //       }
+            //     }
 
-                if (value == 4) {
-                  if (global.currentUser?.id == null) {
-                    return Get.to(() => LoginScreen(analytics: widget.analytics, observer: widget.observer));
-                  }
-                }
-                controller.changeTabIndex(value);
-              },
-            ),
-            floatingActionButton: FloatingActionButton(
-                child: Icon(
-                  Icons.add_shopping_cart_outlined,
-                  color: Theme.of(context).colorScheme.onPrimaryContainer,
-                ),
-                onPressed: () {
-                  if (global.currentUser?.id == null) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => LoginScreen(analytics: widget.analytics, observer: widget.observer),
-                      ),
-                    );
-                  } else {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => CartScreen(analytics: widget.analytics, observer: widget.observer),
-                      ),
-                    );
-                  }
-                }),
-            floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+            //     if (value == 4) {
+            //       if (global.currentUser?.id == null) {
+            //         return Get.to(() => LoginScreen(analytics: widget.analytics, observer: widget.observer));
+            //       }
+            //     }
+            //     controller.changeTabIndex(value);
+            //   },
+            // ),
+            // floatingActionButton: FloatingActionButton(
+            //     child: Icon(
+            //       Icons.add_shopping_cart_outlined,
+            //       color: Theme.of(context).colorScheme.onPrimaryContainer,
+            //     ),
+            //     onPressed: () {
+            //       if (global.currentUser?.id == null) {
+            //         Navigator.push(
+            //           context,
+            //           MaterialPageRoute(
+            //             builder: (context) => LoginScreen(analytics: widget.analytics, observer: widget.observer),
+            //           ),
+            //         );
+            //       } else {
+            //         Navigator.push(
+            //           context,
+            //           MaterialPageRoute(
+            //             builder: (context) => CartScreen(analytics: widget.analytics, observer: widget.observer),
+            //           ),
+            //         );
+            //       }
+            //     }),
+            // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
           );
         },
       ),

@@ -11,8 +11,10 @@ import 'package:user/models/homeScreenDataModel.dart';
 import 'package:user/screens/notification_screen.dart';
 import 'package:user/screens/product_description_screen.dart';
 import 'package:user/screens/productlist_screen.dart';
+import 'package:user/screens/search_results_screen.dart';
 import 'package:user/screens/search_screen.dart';
 import 'package:user/widgets/dashboard_widgets.dart';
+import 'package:user/widgets/my_text_box.dart';
 
 class DashboardScreen extends BaseRoute {
   final Function()? onAppDrawerButtonPressed;
@@ -36,6 +38,7 @@ class _DashboardScreenState extends BaseRouteState {
   AnimationController? menuAnimation;
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final CartController cartController = Get.put(CartController());
+  TextEditingController _cSearch = new TextEditingController();
 
   _DashboardScreenState({this.onAppDrawerButtonPressed});
 
@@ -70,14 +73,14 @@ class _DashboardScreenState extends BaseRouteState {
                   MdiIcons.barcode,
                   color: Theme.of(context).colorScheme.primary,
                 )),
-            IconButton(
-              visualDensity: VisualDensity(horizontal: -4),
-              icon: Icon(Icons.search_outlined),
-              onPressed: () => Get.to(() => SearchScreen(
-                    analytics: widget.analytics,
-                    observer: widget.observer,
-                  )),
-            ),
+            // IconButton(
+            //   visualDensity: VisualDensity(horizontal: -4),
+            //   icon: Icon(Icons.search_outlined),
+            //   onPressed: () => Get.to(() => SearchScreen(
+            //         analytics: widget.analytics,
+            //         observer: widget.observer,
+            //       )),
+            // ),
             global.currentUser?.id != null
                 ? IconButton(
                     visualDensity: VisualDensity(horizontal: -4),
@@ -114,6 +117,43 @@ class _DashboardScreenState extends BaseRouteState {
                             horizontal: 16,
                           ),
                           child: DashboardScreenHeading(),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                            // vertical: 16.0,
+                            horizontal: 16,
+                          ),
+                          child: MyTextBox(
+                            key: Key('30'),
+                            autofocus: false,
+                            // controller: _cSearch,
+                            // suffixIcon: Icon(
+                            //   Icons.cancel,
+                            //   color: Theme.of(context).colorScheme.primary,
+                            // ),
+                            prefixIcon: Icon(
+                              Icons.search_outlined,
+                              color: Theme.of(context).brightness ==
+                                      Brightness.light
+                                  ? Colors.grey[800]
+                                  : Colors.grey[350],
+                            ),
+                            onTap: () => Get.to(() => SearchScreen(
+                                  analytics: widget.analytics,
+                                  observer: widget.observer,
+                                )),
+                            hintText:
+                                "${AppLocalizations.of(context)!.hnt_search_product}",
+                            textCapitalization: TextCapitalization.words,
+                            // onChanged: (value) {},
+                            // onEditingComplete: () {
+                            //   Get.to(() => SearchResultsScreen(
+                            //         analytics: widget.analytics,
+                            //         observer: widget.observer,
+                            //         searchParams: _cSearch.text.trim(),
+                            //       ));
+                            // },
+                          ),
                         ),
                         // (snapshot.data?.banner.isNotEmpty ?? false) ?
                         //   DashboardBanner(

@@ -17,10 +17,12 @@ import 'package:user/screens/contact_us_screen.dart';
 import 'package:user/screens/coupons_screen.dart';
 import 'package:user/screens/login_screen.dart';
 import 'package:user/screens/membership_screen.dart';
+import 'package:user/screens/order_history_screen.dart';
 import 'package:user/screens/product_request_screen.dart';
 import 'package:user/screens/refer_and_earn_screen.dart';
 import 'package:user/screens/reward_screen.dart';
 import 'package:user/screens/top_deals_screen.dart';
+import 'package:user/screens/user_profile_screen.dart';
 import 'package:user/screens/wallet_screen.dart';
 import 'package:user/screens/wishlist_screen.dart';
 import 'package:user/widgets/app_menu_list_tile.dart';
@@ -113,6 +115,22 @@ class _AppMenuScreenState extends BaseRouteState {
                               observer: widget.observer)),
                         )
                       : SizedBox(),
+                  SizedBox(height: 8.0),
+                  AppMenuListTile(
+                    label: "Order",
+                    icon: Icons.history_outlined,
+                    onPressed: () => Get.to(() => OrderHistoryScreen(
+                        analytics: widget.analytics,
+                        observer: widget.observer)),
+                  ),
+                  SizedBox(height: 8.0),
+                  AppMenuListTile(
+                    label: "Profile",
+                    icon: Icons.account_circle_outlined,
+                    onPressed: () => Get.to(() => UserProfileScreen(
+                        analytics: widget.analytics,
+                        observer: widget.observer)),
+                  ),
                   SizedBox(height: 8.0),
                   global.nearStoreModel != null
                       ? AppMenuListTile(
