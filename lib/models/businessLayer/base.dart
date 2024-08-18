@@ -41,7 +41,8 @@ class Base extends StatefulWidget {
   void showNetworkErrorSnackBar(GlobalKey<ScaffoldState> scaffoldKey) {}
 }
 
-class BaseState extends State<Base> with TickerProviderStateMixin, WidgetsBindingObserver {
+class BaseState extends State<Base>
+    with TickerProviderStateMixin, WidgetsBindingObserver {
   bool bannerAdLoaded = false;
   late APIHelper apiHelper;
 
@@ -73,8 +74,7 @@ class BaseState extends State<Base> with TickerProviderStateMixin, WidgetsBindin
             hideLoader();
             AppLocalizations? localizations = AppLocalizations.of(context);
             if (localizations != null) {
-              showToast(localizations
-                  .txt_please_try_again_after_sometime);
+              showToast(localizations.txt_please_try_again_after_sometime);
             }
             // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             //   content: Text(
@@ -99,7 +99,8 @@ class BaseState extends State<Base> with TickerProviderStateMixin, WidgetsBindin
     return SizedBox.shrink();
   }
 
-  Future<MembershipStatus?> checkMemberShipStatus(GlobalKey<ScaffoldState>? scaffoldKey) async {
+  Future<MembershipStatus?> checkMemberShipStatus(
+      GlobalKey<ScaffoldState>? scaffoldKey) async {
     MembershipStatus? _membershipStatus = MembershipStatus();
     try {
       bool _isConnected = await br.checkConnectivity();
@@ -114,7 +115,8 @@ class BaseState extends State<Base> with TickerProviderStateMixin, WidgetsBindin
             } else {
               hideLoader();
 
-              showSnackBar(key: scaffoldKey, snackBarMessage: '${result.message}');
+              showSnackBar(
+                  key: scaffoldKey, snackBarMessage: '${result.message}');
             }
           }
         });
@@ -155,19 +157,22 @@ class BaseState extends State<Base> with TickerProviderStateMixin, WidgetsBindin
     super.didChangeAppLifecycleState(state);
     print('appLifeCycleState inactive');
 
-    if (global.sp!=null && global.sp!.getString("currentUser") != null) {
+    if (global.sp != null && global.sp!.getString("currentUser") != null) {
       if (!global.isChatNotTapped) {
-        global.currentUser = CurrentUser.fromJson(json.decode(global.sp!.getString("currentUser")!));
+        global.currentUser = CurrentUser.fromJson(
+            json.decode(global.sp!.getString("currentUser")!));
         if (global.localNotificationModel.route == 'chatlist_screen') {
           if (state == AppLifecycleState.resumed) {
             setState(() {
               global.isChatNotTapped = true;
             });
-            Get.to(() => ChatScreen(analytics: widget.analytics, observer: widget.observer));
+            Get.to(() => ChatScreen(
+                analytics: widget.analytics, observer: widget.observer));
           }
         }
       }
-    } else if (global.localNotificationModel.chatId != null && !global.isChatNotTapped) {
+    } else if (global.localNotificationModel.chatId != null &&
+        !global.isChatNotTapped) {
       if (state == AppLifecycleState.resumed) {
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => LoginScreen(
@@ -187,34 +192,33 @@ class BaseState extends State<Base> with TickerProviderStateMixin, WidgetsBindin
       showAdaptiveDialog(
           context: context,
           builder: (context) => AlertDialog.adaptive(
-            title: Text(
-              "${AppLocalizations.of(context)!.lbl_exit_app}",
-              style: TextStyle(
-                fontFamily: 'AvenirLTStd',
-              ),
-            ),
-            content: Text("${AppLocalizations.of(context)!.txt_exit_app_msg}",
-                style: TextStyle(
-                  fontFamily: 'AvenirLTStd',
-                )),
-            actions: [
-              TextButton(
-                child: Text('${AppLocalizations.of(context)!.lbl_cancel}',
-                    style: TextStyle(color: Colors.red)
+                title: Text(
+                  "${AppLocalizations.of(context)!.lbl_exit_app}",
+                  style: TextStyle(
+                    fontFamily: 'AvenirLTStd',
+                  ),
                 ),
-                onPressed: () {
-                  return Navigator.of(context).pop(false);
-                },
-              ),
-              TextButton(
-                child: Text("${AppLocalizations.of(context)!.btn_exit}"),
-                onPressed: () async {
-                 exit(0);
-                },
-              ),
-            ],
-          )
-      );
+                content:
+                    Text("${AppLocalizations.of(context)!.txt_exit_app_msg}",
+                        style: TextStyle(
+                          fontFamily: 'AvenirLTStd',
+                        )),
+                actions: [
+                  TextButton(
+                    child: Text('${AppLocalizations.of(context)!.lbl_cancel}',
+                        style: TextStyle(color: Colors.red)),
+                    onPressed: () {
+                      return Navigator.of(context).pop(false);
+                    },
+                  ),
+                  TextButton(
+                    child: Text("${AppLocalizations.of(context)!.btn_exit}"),
+                    onPressed: () async {
+                      exit(0);
+                    },
+                  ),
+                ],
+              ));
     } catch (e) {
       print('Exception - base.dart - exitAppDialog(): ' + e.toString());
     }
@@ -222,7 +226,8 @@ class BaseState extends State<Base> with TickerProviderStateMixin, WidgetsBindin
 
   getAddressFromLatLng() async {
     try {
-      List<Placemark> placemarks = await placemarkFromCoordinates(global.lat!, global.lng!);
+      List<Placemark> placemarks =
+          await placemarkFromCoordinates(global.lat!, global.lng!);
 
       Placemark place = placemarks[0];
 
@@ -237,7 +242,8 @@ class BaseState extends State<Base> with TickerProviderStateMixin, WidgetsBindin
 
   Future<void> getCurrentLocation() async {
     try {
-      Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best);
+      Position position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.best);
       setState(() {
         global.lat = position.latitude;
         global.lng = position.longitude;
@@ -251,20 +257,23 @@ class BaseState extends State<Base> with TickerProviderStateMixin, WidgetsBindin
       hideLoader();
       print("Exception -  base.dart - getCurrentLocation():" + e.toString());
     }
-    return ;
+    return;
   }
 
   Future<void> getCurrentPosition() async {
     try {
       if (Platform.isIOS) {
         LocationPermission s = await Geolocator.checkPermission();
-        if (s == LocationPermission.denied || s == LocationPermission.deniedForever) {
+        if (s == LocationPermission.denied ||
+            s == LocationPermission.deniedForever) {
           s = await Geolocator.requestPermission();
         }
-        if (s != LocationPermission.denied || s != LocationPermission.deniedForever) {
+        if (s != LocationPermission.denied ||
+            s != LocationPermission.deniedForever) {
           await getCurrentLocation();
         } else {
-          global.locationMessage = '${AppLocalizations.of(context)!.txt_please_enablet_location_permission_to_use_app}';
+          global.locationMessage =
+              '${AppLocalizations.of(context)!.txt_please_enablet_location_permission_to_use_app}';
         }
       } else {
         PermissionStatus permissionStatus = await Permission.location.status;
@@ -274,7 +283,8 @@ class BaseState extends State<Base> with TickerProviderStateMixin, WidgetsBindin
         if (permissionStatus.isGranted) {
           await getCurrentLocation();
         } else {
-          global.locationMessage = '${AppLocalizations.of(context)!.txt_please_enablet_location_permission_to_use_app}';
+          global.locationMessage =
+              '${AppLocalizations.of(context)!.txt_please_enablet_location_permission_to_use_app}';
         }
       }
     } catch (e) {
@@ -295,7 +305,8 @@ class BaseState extends State<Base> with TickerProviderStateMixin, WidgetsBindin
               global.sp!.setString("lastloc", '${global.lat}|${global.lng}');
             }
             if (global.currentUser!.id != null) {
-              await apiHelper.updateFirebaseUserFcmToken(global.currentUser!.id, global.appDeviceId);
+              await apiHelper.updateFirebaseUserFcmToken(
+                  global.currentUser!.id, global.appDeviceId);
             }
             if (global.currentUser!.id != null) {
               await global.userProfileController.getUserAddressList();
@@ -324,7 +335,7 @@ class BaseState extends State<Base> with TickerProviderStateMixin, WidgetsBindin
 
   openBarcodeScanner(GlobalKey<ScaffoldState> scaffoldKey) async {
     try {
-      String barcodeScanRes;
+      String barcodeScanRes = '-1';
       barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
         '#ff6666',
         'Cancel',
@@ -336,7 +347,8 @@ class BaseState extends State<Base> with TickerProviderStateMixin, WidgetsBindin
       }
     } catch (e) {
       hideLoader();
-      print("Exception - businessRule.dart - openBarcodeScanner():" + e.toString());
+      print("Exception - businessRule.dart - openBarcodeScanner():" +
+          e.toString());
     }
   }
 
@@ -347,7 +359,10 @@ class BaseState extends State<Base> with TickerProviderStateMixin, WidgetsBindin
         verificationCompleted: (PhoneAuthCredential credential) {},
         verificationFailed: (FirebaseAuthException e) {
           hideLoader();
-          showSnackBar(key: _scaffoldKey, snackBarMessage: '${AppLocalizations.of(context)!.txt_please_try_again_after_sometime}');
+          showSnackBar(
+              key: _scaffoldKey,
+              snackBarMessage:
+                  '${AppLocalizations.of(context)!.txt_please_try_again_after_sometime}');
         },
         codeSent: (String verificationId, int? resendToken) async {
           hideLoader();
@@ -404,11 +419,13 @@ class BaseState extends State<Base> with TickerProviderStateMixin, WidgetsBindin
             ),
           ],
         ),
-        action: SnackBarAction(textColor: Colors.white, label: 'RETRY', onPressed: () async {}),
+        action: SnackBarAction(
+            textColor: Colors.white, label: 'RETRY', onPressed: () async {}),
         backgroundColor: Colors.grey,
       ));
     } catch (e) {
-      print("Exception -  base.dart - showNetworkErrorSnackBar():" + e.toString());
+      print("Exception -  base.dart - showNetworkErrorSnackBar():" +
+          e.toString());
     }
   }
 
@@ -426,7 +443,8 @@ class BaseState extends State<Base> with TickerProviderStateMixin, WidgetsBindin
     );
   }
 
-  void showSnackBar({required String snackBarMessage, GlobalKey<ScaffoldState>? key}) {
+  void showSnackBar(
+      {required String snackBarMessage, GlobalKey<ScaffoldState>? key}) {
     showToast(snackBarMessage);
   }
 
@@ -469,11 +487,16 @@ class BaseState extends State<Base> with TickerProviderStateMixin, WidgetsBindin
           result.authentication.then((googleKey) async {
             if (_googleSignIn.currentUser != null) {
               showOnlyLoaderDialog();
-              await apiHelper.socialLogin(userEmail: _googleSignIn.currentUser!.email, type: 'google').then((result) async {
+              await apiHelper
+                  .socialLogin(
+                      userEmail: _googleSignIn.currentUser!.email,
+                      type: 'google')
+                  .then((result) async {
                 if (result != null) {
                   if (result.status == "1") {
                     global.currentUser = result.data;
-                    global.sp!.setString('currentUser', json.encode(global.currentUser!.toJson()));
+                    global.sp!.setString('currentUser',
+                        json.encode(global.currentUser!.toJson()));
 
                     await global.userProfileController.getMyProfile();
                     hideLoader();
@@ -489,7 +512,10 @@ class BaseState extends State<Base> with TickerProviderStateMixin, WidgetsBindin
                     hideLoader();
                     // registration required
                     Get.to(
-                      () => SignUpScreen(user: _currentUser, analytics: widget.analytics, observer: widget.observer),
+                      () => SignUpScreen(
+                          user: _currentUser,
+                          analytics: widget.analytics,
+                          observer: widget.observer),
                     );
                   }
                 }
@@ -516,13 +542,17 @@ class BaseState extends State<Base> with TickerProviderStateMixin, WidgetsBindin
 
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => ProductDescriptionScreen(productDetail: result.data, analytics: widget.analytics, observer: widget.observer),
+                  builder: (context) => ProductDescriptionScreen(
+                      productDetail: result.data,
+                      analytics: widget.analytics,
+                      observer: widget.observer),
                 ),
               );
             } else {
               hideLoader();
 
-              showSnackBar(key: scaffoldKey, snackBarMessage: '${result.message}');
+              showSnackBar(
+                  key: scaffoldKey, snackBarMessage: '${result.message}');
             }
           } else {
             hideLoader();
