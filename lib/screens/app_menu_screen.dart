@@ -117,20 +117,34 @@ class _AppMenuScreenState extends BaseRouteState {
                       : SizedBox(),
                   SizedBox(height: 8.0),
                   AppMenuListTile(
-                    label: "Order",
-                    icon: Icons.history_outlined,
-                    onPressed: () => Get.to(() => OrderHistoryScreen(
-                        analytics: widget.analytics,
-                        observer: widget.observer)),
-                  ),
+                      label: "Order",
+                      icon: Icons.history_outlined,
+                      onPressed: () {
+                        if (global.currentUser!.id == null) {
+                          Get.to(() => LoginScreen(
+                              analytics: widget.analytics,
+                              observer: widget.observer));
+                        } else {
+                          Get.to(() => OrderHistoryScreen(
+                              analytics: widget.analytics,
+                              observer: widget.observer));
+                        }
+                      }),
                   SizedBox(height: 8.0),
                   AppMenuListTile(
-                    label: "Profile",
-                    icon: Icons.account_circle_outlined,
-                    onPressed: () => Get.to(() => UserProfileScreen(
-                        analytics: widget.analytics,
-                        observer: widget.observer)),
-                  ),
+                      label: "Profile",
+                      icon: Icons.account_circle_outlined,
+                      onPressed: () {
+                        if (global.currentUser!.id == null) {
+                          Get.to(() => LoginScreen(
+                              analytics: widget.analytics,
+                              observer: widget.observer));
+                        } else {
+                          Get.to(() => UserProfileScreen(
+                              analytics: widget.analytics,
+                              observer: widget.observer));
+                        }
+                      }),
                   SizedBox(height: 8.0),
                   global.nearStoreModel != null
                       ? AppMenuListTile(

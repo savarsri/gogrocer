@@ -20,10 +20,21 @@ class PopularProductsMenuItem extends StatefulWidget {
   final Product product;
   final dynamic analytics;
   final dynamic observer;
-  PopularProductsMenuItem({required this.product, this.analytics, this.observer, this.callId, this.key}) : super();
+  PopularProductsMenuItem(
+      {required this.product,
+      this.analytics,
+      this.observer,
+      this.callId,
+      this.key})
+      : super();
 
   @override
-  _PopularProductsMenuItemState createState() => _PopularProductsMenuItemState(product: product, analytics: analytics, observer: observer, callId: callId, key: key);
+  _PopularProductsMenuItemState createState() => _PopularProductsMenuItemState(
+      product: product,
+      analytics: analytics,
+      observer: observer,
+      callId: callId,
+      key: key);
 }
 
 class ProductsMenu extends StatefulWidget {
@@ -31,10 +42,16 @@ class ProductsMenu extends StatefulWidget {
   final dynamic observer;
   final int? callId;
   final List<Product>? categoryProductList;
-  ProductsMenu({this.analytics, this.observer, this.categoryProductList, this.callId}) : super();
+  ProductsMenu(
+      {this.analytics, this.observer, this.categoryProductList, this.callId})
+      : super();
 
   @override
-  _ProductsMenuState createState() => _ProductsMenuState(analytics: analytics, observer: observer, categoryProductList: categoryProductList, callId: callId);
+  _ProductsMenuState createState() => _ProductsMenuState(
+      analytics: analytics,
+      observer: observer,
+      categoryProductList: categoryProductList,
+      callId: callId);
 }
 
 class _PopularProductsMenuItemState extends State<PopularProductsMenuItem> {
@@ -47,7 +64,8 @@ class _PopularProductsMenuItemState extends State<PopularProductsMenuItem> {
   final CartController cartController = Get.put(CartController());
   int? _qty;
 
-  _PopularProductsMenuItemState({this.product, this.analytics, this.observer, this.callId, this.key});
+  _PopularProductsMenuItemState(
+      {this.product, this.analytics, this.observer, this.callId, this.key});
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +76,8 @@ class _PopularProductsMenuItemState extends State<PopularProductsMenuItem> {
       child: Card(
           elevation: 0,
           child: Padding(
-            padding: const EdgeInsets.only(left: 8, right: 8, bottom: 6, top: 10),
+            padding:
+                const EdgeInsets.only(left: 8, right: 8, bottom: 6, top: 10),
             child: GetBuilder<CartController>(
               init: cartController,
               builder: (value) => Row(
@@ -74,39 +93,59 @@ class _PopularProductsMenuItemState extends State<PopularProductsMenuItem> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
-                              product!.discount != null && product!.discount! > 0 ?
-                              Container(
-                                height: 16,
-                                decoration: BoxDecoration(
-                                  color: Theme.of(context).colorScheme.primaryContainer,
-                                  borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(4),
-                                    bottomRight: Radius.circular(4),
-                                  ),
-                                ),
-                                child: Text(
-                                  "${product!.discount}% OFF",
-                                  textAlign: TextAlign.center,
-                                  style: Theme.of(context).primaryTextTheme.bodySmall!.copyWith(
-                                    color: Theme.of(context).colorScheme.onPrimaryContainer,
-                                  ),
-                                ),
-                              ):SizedBox.shrink(),
+                              product!.discount != null &&
+                                      product!.discount! > 0
+                                  ? Container(
+                                      height: 16,
+                                      decoration: BoxDecoration(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .primaryContainer,
+                                        borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(4),
+                                          bottomRight: Radius.circular(4),
+                                        ),
+                                      ),
+                                      child: Text(
+                                        "${product!.discount}% OFF",
+                                        textAlign: TextAlign.center,
+                                        style: Theme.of(context)
+                                            .primaryTextTheme
+                                            .bodySmall!
+                                            .copyWith(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onPrimaryContainer,
+                                            ),
+                                      ),
+                                    )
+                                  : SizedBox.shrink(),
                               CachedNetworkImage(
-                                imageUrl: global.appInfo!.imageUrl! + product!.productImage!,
-                                imageBuilder: (context, imageProvider) => Container(
+                                imageUrl: global.appInfo!.imageUrl! +
+                                    product!.productImage!,
+                                imageBuilder: (context, imageProvider) =>
+                                    Container(
                                   color: Color(0xffF7F7F7),
                                   padding: EdgeInsets.all(5),
                                   child: Container(
                                     height: 60,
                                     width: 60,
-                                    decoration: BoxDecoration(color: Color(0xffF7F7F7), image: DecorationImage(image: imageProvider, fit: BoxFit.contain)),
+                                    decoration: BoxDecoration(
+                                        color: Color(0xffF7F7F7),
+                                        image: DecorationImage(
+                                            image: imageProvider,
+                                            fit: BoxFit.contain)),
                                     child: Visibility(
-                                      visible: product!.stock! > 0 ? false : true,
+                                      visible:
+                                          product!.stock! > 0 ? false : true,
                                       child: Container(
                                         width: 60,
                                         alignment: Alignment.center,
-                                        decoration: BoxDecoration(color: Colors.white.withOpacity(0.6), borderRadius: BorderRadius.circular(5)),
+                                        decoration: BoxDecoration(
+                                            color:
+                                                Colors.white.withOpacity(0.6),
+                                            borderRadius:
+                                                BorderRadius.circular(5)),
                                         padding: const EdgeInsets.all(5),
                                         child: Center(
                                           child: Transform.rotate(
@@ -114,7 +153,13 @@ class _PopularProductsMenuItemState extends State<PopularProductsMenuItem> {
                                             child: Text(
                                               '${AppLocalizations.of(context)!.txt_out_of_stock}',
                                               textAlign: TextAlign.center,
-                                              style: Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: 13, fontWeight: FontWeight.w600),
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyLarge!
+                                                  .copyWith(
+                                                      fontSize: 13,
+                                                      fontWeight:
+                                                          FontWeight.w600),
                                             ),
                                           ),
                                         ),
@@ -122,7 +167,8 @@ class _PopularProductsMenuItemState extends State<PopularProductsMenuItem> {
                                     ),
                                   ),
                                 ),
-                                placeholder: (context, url) => Center(child: CircularProgressIndicator()),
+                                placeholder: (context, url) =>
+                                    Center(child: CircularProgressIndicator()),
                                 errorWidget: (context, url, error) => Container(
                                   height: 80,
                                   width: 60,
@@ -145,56 +191,74 @@ class _PopularProductsMenuItemState extends State<PopularProductsMenuItem> {
                                   product!.productName!,
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
-                                  style: textTheme.bodyLarge!.copyWith(fontWeight: FontWeight.bold, fontSize: 16),
+                                  style: textTheme.bodyLarge!.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16),
                                 ),
                                 SizedBox(height: 5),
                                 Padding(
                                   padding: const EdgeInsets.only(bottom: 3),
                                   child: Text(
-                                    product!.type != null && product!.type != '' ? product!.type! : '',
+                                    product!.type != null && product!.type != ''
+                                        ? product!.type!
+                                        : '',
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 1,
                                     style: normalCaptionStyle(context),
                                   ),
                                 ),
                                 Text(
-                                  product!.description != null && product!.description != '' ? product!.description! : '',
+                                  product!.description != null &&
+                                          product!.description != ''
+                                      ? product!.description!
+                                      : '',
                                   overflow: TextOverflow.clip,
                                   maxLines: 1,
                                   style: normalCaptionStyle(context),
                                 ),
                                 product!.rating != null && product!.rating! > 0
                                     ? Padding(
-                                  padding: EdgeInsets.only(top: 4.0),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-                                      Icon(
-                                        Icons.star,
-                                        size: 13,
-                                        color: Theme.of(context).colorScheme.primary,
-                                      ),
-                                      RichText(
-                                        text: TextSpan(
-                                          text: "${product!.rating} ",
-                                          style: Theme.of(context).textTheme.bodySmall,
+                                        padding: EdgeInsets.only(top: 4.0),
+                                        child: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
                                           children: [
-                                            TextSpan(
-                                              text: '|',
-                                              style: Theme.of(context).textTheme.bodySmall,
+                                            Icon(
+                                              Icons.star,
+                                              size: 13,
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .primary,
                                             ),
-                                            TextSpan(
-                                              text: ' ${product!.ratingCount} ${AppLocalizations.of(context)!.txt_ratings}',
-                                              style: Theme.of(context).textTheme.bodySmall,
-                                            )
+                                            RichText(
+                                              text: TextSpan(
+                                                text: "${product!.rating} ",
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodySmall,
+                                                children: [
+                                                  TextSpan(
+                                                    text: '|',
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .bodySmall,
+                                                  ),
+                                                  TextSpan(
+                                                    text:
+                                                        ' ${product!.ratingCount} ${AppLocalizations.of(context)!.txt_ratings}',
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .bodySmall,
+                                                  )
+                                                ],
+                                              ),
+                                            ),
                                           ],
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                )
+                                      )
                                     : SizedBox()
                               ],
                             ),
@@ -213,14 +277,15 @@ class _PopularProductsMenuItemState extends State<PopularProductsMenuItem> {
                                       Navigator.of(context).push(
                                         MaterialPageRoute(
                                             builder: (context) => LoginScreen(
-                                              analytics: widget.analytics,
-                                              observer: widget.observer,
-                                            )),
+                                                  analytics: widget.analytics,
+                                                  observer: widget.observer,
+                                                )),
                                       );
                                     });
                                   } else {
                                     showOnlyLoaderDialog();
-                                    await addRemoveWishList(product!.varientId, product);
+                                    await addRemoveWishList(
+                                        product!.varientId, product);
 
                                     Navigator.pop(context);
                                     setState(() {});
@@ -228,177 +293,240 @@ class _PopularProductsMenuItemState extends State<PopularProductsMenuItem> {
                                 },
                                 child: product!.isFavourite
                                     ? Icon(
-                                  MdiIcons.heart,
-                                  size: 20,
-                                  color: Colors.red,
-                                )
+                                        MdiIcons.heart,
+                                        size: 20,
+                                        color: Colors.red,
+                                      )
                                     : Icon(
-                                  MdiIcons.heartOutline,
-                                  size: 20,
-                                  color: Colors.red,
-                                ),
+                                        MdiIcons.heartOutline,
+                                        size: 20,
+                                        color: Colors.red,
+                                      ),
                               ),
                             ),
                             Text(
                               "${global.appInfo!.currencySign} ${product!.price}",
-                              style: textTheme.bodyLarge!.copyWith(fontWeight: FontWeight.bold, fontSize: 16),
+                              style: textTheme.bodyLarge!.copyWith(
+                                  fontWeight: FontWeight.bold, fontSize: 16),
                             ),
                             product!.price == product!.mrp
                                 ? SizedBox()
                                 : Text(
-                              "${global.appInfo!.currencySign} ${product!.mrp}",
-                              style: textTheme.labelSmall!.copyWith(decoration: TextDecoration.lineThrough, fontSize: 12),
-                            ),
+                                    "${global.appInfo!.currencySign} ${product!.mrp}",
+                                    style: textTheme.labelSmall!.copyWith(
+                                        decoration: TextDecoration.lineThrough,
+                                        fontSize: 12),
+                                  ),
                             Spacer(),
                             product!.stock! > 0
                                 ? callId == 0
-                                ? product!.cartQty == null || product!.cartQty == 0
-                                ? InkWell(
-                              onTap: () async {
-                                if (global.currentUser!.id == null) {
-                                  Get.to(LoginScreen(
-                                    analytics: widget.analytics,
-                                    observer: widget.observer,
-                                  ));
-                                } else {
-                                  _qty = 1;
-                                  showOnlyLoaderDialog();
-                                  ATCMS? isSuccess;
-                                  isSuccess = await value.addToCart(product, _qty, false, varientId: product!.varientId, callId: 0);
-                                  if (isSuccess!.isSuccess != null) {
-                                    Navigator.of(context).pop();
-                                  }
-                                  showToast(isSuccess.message!);
-                                  setState(() {});
-                                }
-                              },
-                              child: Container(
-                                height: 23,
-                                width: 23,
-                                alignment: Alignment.center,
-                                color: Theme.of(context).colorScheme.secondaryContainer,
-                                child: Icon(
-                                  Icons.add,
-                                  size: 15.0,
-                                  color: Theme.of(context).colorScheme.onSecondaryContainer,
-                                ),
-                              ),
-                            )
-                                : Padding(
-                              padding: const EdgeInsets.only(top: 5, bottom: 5),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  InkWell(
-                                    onTap: () async {
-                                      if (product!.cartQty != null && product!.cartQty == 1) {
-                                        _qty = 0;
-                                      } else {
-                                        _qty = product!.cartQty! - 1;
-                                      }
+                                    ? product!.cartQty == null ||
+                                            product!.cartQty == 0
+                                        ? InkWell(
+                                            onTap: () async {
+                                              if (global.currentUser!.id ==
+                                                  null) {
+                                                Get.to(LoginScreen(
+                                                  analytics: widget.analytics,
+                                                  observer: widget.observer,
+                                                ));
+                                              } else {
+                                                _qty = 1;
+                                                showOnlyLoaderDialog();
+                                                ATCMS? isSuccess;
+                                                isSuccess =
+                                                    await value.addToCart(
+                                                        product, _qty, false,
+                                                        varientId:
+                                                            product!.varientId,
+                                                        callId: 0);
+                                                if (isSuccess!.isSuccess !=
+                                                    null) {
+                                                  Navigator.of(context).pop();
+                                                }
+                                                showToast(isSuccess.message!);
+                                                setState(() {});
+                                              }
+                                            },
+                                            child: Container(
+                                              height: 23,
+                                              width: 23,
+                                              alignment: Alignment.center,
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .secondaryContainer,
+                                              child: Icon(
+                                                Icons.add,
+                                                size: 15.0,
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .onSecondaryContainer,
+                                              ),
+                                            ),
+                                          )
+                                        : Padding(
+                                            padding: const EdgeInsets.only(
+                                                top: 5, bottom: 5),
+                                            child: Row(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                InkWell(
+                                                  onTap: () async {
+                                                    if (product!.cartQty !=
+                                                            null &&
+                                                        product!.cartQty == 1) {
+                                                      _qty = 0;
+                                                    } else {
+                                                      _qty =
+                                                          product!.cartQty! - 1;
+                                                    }
 
-                                      showOnlyLoaderDialog();
-                                      ATCMS? isSuccess;
-                                      isSuccess = await value.addToCart(product, _qty, true, varientId: product!.varientId, callId: 0);
-                                      if (isSuccess!.isSuccess != null) {
-                                        Navigator.of(context).pop();
-                                      }
-                                      showToast(isSuccess.message!);
-                                      setState(() {});
-                                    },
-                                    child: Container(
-                                        height: 23,
-                                        width: 23,
-                                        alignment: Alignment.center,
-                                        color: Theme.of(context).colorScheme.secondaryContainer,
-                                        child: product!.cartQty == 1
-                                            ? Icon(
-                                          Icons.delete,
-                                          size: 17.0,
-                                          color: Theme.of(context).colorScheme.onSecondaryContainer,
-                                        )
-                                            : Icon(
-                                          MdiIcons.minus,
-                                          size: 17.0,
-                                          color: Theme.of(context).colorScheme.onSecondaryContainer,
-                                        )),
-                                  ),
-                                  SizedBox(
-                                    width: 5,
-                                  ),
-                                  Container(
-                                    height: 21,
-                                    width: 21,
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                        width: 1.0,
-                                        color: Theme.of(context).colorScheme.primary,
-                                      ),
-                                      borderRadius: BorderRadius.all(Radius.circular(5.0) //                 <--- border radius here
-                                      ),
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        "${product!.cartQty}",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          color: Theme.of(context).colorScheme.primary,
+                                                    showOnlyLoaderDialog();
+                                                    ATCMS? isSuccess;
+                                                    isSuccess =
+                                                        await value.addToCart(
+                                                            product, _qty, true,
+                                                            varientId: product!
+                                                                .varientId,
+                                                            callId: 0);
+                                                    if (isSuccess!.isSuccess !=
+                                                        null) {
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                    }
+                                                    showToast(
+                                                        isSuccess.message!);
+                                                    setState(() {});
+                                                  },
+                                                  child: Container(
+                                                      height: 23,
+                                                      width: 23,
+                                                      alignment:
+                                                          Alignment.center,
+                                                      color: Theme.of(context)
+                                                          .colorScheme
+                                                          .secondaryContainer,
+                                                      child: product!.cartQty ==
+                                                              1
+                                                          ? Icon(
+                                                              Icons.delete,
+                                                              size: 17.0,
+                                                              color: Theme.of(
+                                                                      context)
+                                                                  .colorScheme
+                                                                  .onSecondaryContainer,
+                                                            )
+                                                          : Icon(
+                                                              MdiIcons.minus,
+                                                              size: 17.0,
+                                                              color: Theme.of(
+                                                                      context)
+                                                                  .colorScheme
+                                                                  .onSecondaryContainer,
+                                                            )),
+                                                ),
+                                                SizedBox(
+                                                  width: 5,
+                                                ),
+                                                Container(
+                                                  height: 21,
+                                                  width: 21,
+                                                  decoration: BoxDecoration(
+                                                    border: Border.all(
+                                                      width: 1.0,
+                                                      color: Theme.of(context)
+                                                          .colorScheme
+                                                          .primary,
+                                                    ),
+                                                    borderRadius: BorderRadius.all(
+                                                        Radius.circular(
+                                                            5.0) //                 <--- border radius here
+                                                        ),
+                                                  ),
+                                                  child: Center(
+                                                    child: Text(
+                                                      "${product!.cartQty}",
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: TextStyle(
+                                                        color: Theme.of(context)
+                                                            .colorScheme
+                                                            .primary,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  width: 5,
+                                                ),
+                                                InkWell(
+                                                  onTap: () async {
+                                                    _qty =
+                                                        product!.cartQty! + 1;
+
+                                                    showOnlyLoaderDialog();
+                                                    ATCMS? isSuccess;
+                                                    isSuccess =
+                                                        await value.addToCart(
+                                                            product,
+                                                            _qty,
+                                                            false,
+                                                            varientId: product!
+                                                                .varientId,
+                                                            callId: 0);
+                                                    if (isSuccess!.isSuccess !=
+                                                        null) {
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                    }
+                                                    showToast(
+                                                        isSuccess.message!);
+                                                    setState(() {});
+                                                  },
+                                                  child: Container(
+                                                      height: 23,
+                                                      width: 23,
+                                                      alignment:
+                                                          Alignment.center,
+                                                      color: Theme.of(context)
+                                                          .colorScheme
+                                                          .onSecondaryContainer,
+                                                      child: Icon(
+                                                        MdiIcons.plus,
+                                                        size: 17,
+                                                      )),
+                                                )
+                                              ],
+                                            ),
+                                          )
+                                    : InkWell(
+                                        onTap: () async {
+                                          if (global.currentUser!.id == null) {
+                                            Get.to(LoginScreen(
+                                              analytics: widget.analytics,
+                                              observer: widget.observer,
+                                            ));
+                                          } else {
+                                            _showVarientModalBottomSheet(
+                                                textTheme, value);
+                                          }
+                                        },
+                                        child: Container(
+                                          height: 23,
+                                          width: 23,
+                                          alignment: Alignment.center,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .secondaryContainer,
+                                          child: Icon(
+                                            Icons.add,
+                                            size: 17.0,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onSecondaryContainer,
+                                          ),
                                         ),
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 5,
-                                  ),
-                                  InkWell(
-                                    onTap: () async {
-                                      _qty = product!.cartQty! + 1;
-
-                                      showOnlyLoaderDialog();
-                                      ATCMS? isSuccess;
-                                      isSuccess = await value.addToCart(product, _qty, false, varientId: product!.varientId, callId: 0);
-                                      if (isSuccess!.isSuccess != null) {
-                                        Navigator.of(context).pop();
-                                      }
-                                      showToast(isSuccess.message!);
-                                      setState(() {});
-                                    },
-                                    child: Container(
-                                        height: 23,
-                                        width: 23,
-                                        alignment: Alignment.center,
-                                        color: Theme.of(context).colorScheme.onSecondaryContainer,
-                                        child: Icon(
-                                          MdiIcons.plus,
-                                          size: 17,
-                                        )),
-                                  )
-                                ],
-                              ),
-                            )
-                                : InkWell(
-                              onTap: () async {
-                                if (global.currentUser!.id == null) {
-                                  Get.to(LoginScreen(
-                                    analytics: widget.analytics,
-                                    observer: widget.observer,
-                                  ));
-                                } else {
-                                  _showVarientModalBottomSheet(textTheme, value);
-                                }
-                              },
-                              child: Container(
-                                height: 23,
-                                width: 23,
-                                alignment: Alignment.center,
-                                color: Theme.of(context).colorScheme.secondaryContainer,
-                                child: Icon(
-                                  Icons.add,
-                                  size: 17.0,
-                                  color: Theme.of(context).colorScheme.onSecondaryContainer,
-                                ),
-                              ),
-                            )
+                                      )
                                 : SizedBox()
                           ],
                         )
@@ -434,13 +562,16 @@ class _PopularProductsMenuItemState extends State<PopularProductsMenuItem> {
             _isAddedSuccesFully = false;
 
             setState(() {});
-            showSnackBar(snackBarMessage: '${AppLocalizations.of(context)!.txt_please_try_again_after_sometime}');
+            showSnackBar(
+                snackBarMessage:
+                    '${AppLocalizations.of(context)!.txt_please_try_again_after_sometime}');
           }
         }
       });
       return _isAddedSuccesFully;
     } catch (e) {
-      print("Exception - products_menu.dart - addRemoveWishList():" + e.toString());
+      print("Exception - products_menu.dart - addRemoveWishList():" +
+          e.toString());
       return _isAddedSuccesFully;
     }
   }
@@ -477,7 +608,8 @@ class _PopularProductsMenuItemState extends State<PopularProductsMenuItem> {
         builder: (BuildContext context) {
           return GetBuilder<CartController>(
             init: cartController,
-            builder: (value) => StatefulBuilder(builder: (BuildContext context, StateSetter setState) {
+            builder: (value) => StatefulBuilder(
+                builder: (BuildContext context, StateSetter setState) {
               return Container(
                 height: 300,
                 child: Column(
@@ -502,12 +634,27 @@ class _PopularProductsMenuItemState extends State<PopularProductsMenuItem> {
                               trimMode: TrimMode.Line,
                               trimCollapsedText: 'Show more',
                               trimExpandedText: 'Show less',
-                              style: Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: 16),
-                              lessStyle: Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: 16),
-                              moreStyle: Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: 16),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyLarge!
+                                  .copyWith(fontSize: 16),
+                              lessStyle: Theme.of(context)
+                                  .textTheme
+                                  .bodyLarge!
+                                  .copyWith(fontSize: 16),
+                              moreStyle: Theme.of(context)
+                                  .textTheme
+                                  .bodyLarge!
+                                  .copyWith(fontSize: 16),
                             ),
-                            subtitle: Text('${product!.varient[i].quantity} ${product!.varient[i].unit} / ${global.appInfo!.currencySign} ${product!.varient[i].price}', style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 15)),
-                            trailing: product!.varient[i].cartQty == null || product!.varient[i].cartQty == 0
+                            subtitle: Text(
+                                '${product!.varient[i].quantity} ${product!.varient[i].unit} / ${global.appInfo!.currencySign} ${product!.varient[i].price}',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleSmall!
+                                    .copyWith(fontSize: 15)),
+                            trailing: product!.varient[i].cartQty == null ||
+                                    product!.varient[i].cartQty == 0
                                 ? InkWell(
                                     onTap: () async {
                                       if (global.currentUser!.id == null) {
@@ -519,7 +666,9 @@ class _PopularProductsMenuItemState extends State<PopularProductsMenuItem> {
                                         showOnlyLoaderDialog();
                                         ATCMS? isSuccess;
                                         _qty = 1;
-                                        isSuccess = await value.addToCart(product, _qty, false, varient: product!.varient[i]);
+                                        isSuccess = await value.addToCart(
+                                            product, _qty, false,
+                                            varient: product!.varient[i]);
                                         if (isSuccess!.isSuccess != null) {
                                           Navigator.of(context).pop();
                                         }
@@ -531,29 +680,41 @@ class _PopularProductsMenuItemState extends State<PopularProductsMenuItem> {
                                       height: 23,
                                       width: 23,
                                       alignment: Alignment.center,
-                                      color: Theme.of(context).colorScheme.secondaryContainer,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .secondaryContainer,
                                       child: Icon(
                                         Icons.add,
                                         size: 17.0,
-                                        color: Theme.of(context).colorScheme.onSecondaryContainer,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onSecondaryContainer,
                                       ),
                                     ),
                                   )
                                 : Padding(
-                                    padding: const EdgeInsets.only(top: 5, bottom: 5),
+                                    padding: const EdgeInsets.only(
+                                        top: 5, bottom: 5),
                                     child: Row(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
                                         InkWell(
                                           onTap: () async {
-                                            if (product!.varient[i].cartQty != null && product!.varient[i].cartQty == 1) {
+                                            if (product!.varient[i].cartQty !=
+                                                    null &&
+                                                product!.varient[i].cartQty ==
+                                                    1) {
                                               _qty = 0;
                                             } else {
-                                              _qty = product!.varient[i].cartQty! - 1;
+                                              _qty =
+                                                  product!.varient[i].cartQty! -
+                                                      1;
                                             }
                                             showOnlyLoaderDialog();
                                             ATCMS? isSuccess;
-                                            isSuccess = await value.addToCart(product, _qty, true, varient: product!.varient[i]);
+                                            isSuccess = await value.addToCart(
+                                                product, _qty, true,
+                                                varient: product!.varient[i]);
                                             if (isSuccess!.isSuccess != null) {
                                               Navigator.of(context).pop();
                                             }
@@ -564,17 +725,25 @@ class _PopularProductsMenuItemState extends State<PopularProductsMenuItem> {
                                               height: 23,
                                               width: 23,
                                               alignment: Alignment.center,
-                                              color: Theme.of(context).colorScheme.tertiaryContainer,
-                                              child: product!.varient[i].cartQty == 1
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .tertiaryContainer,
+                                              child: product!
+                                                          .varient[i].cartQty ==
+                                                      1
                                                   ? Icon(
                                                       Icons.delete,
                                                       size: 17.0,
-                                                      color: Theme.of(context).colorScheme.onTertiaryContainer,
+                                                      color: Theme.of(context)
+                                                          .colorScheme
+                                                          .onTertiaryContainer,
                                                     )
                                                   : Icon(
                                                       MdiIcons.minus,
                                                       size: 17.0,
-                                                      color: Theme.of(context).colorScheme.onTertiaryContainer,
+                                                      color: Theme.of(context)
+                                                          .colorScheme
+                                                          .onTertiaryContainer,
                                                     )),
                                         ),
                                         SizedBox(
@@ -586,9 +755,13 @@ class _PopularProductsMenuItemState extends State<PopularProductsMenuItem> {
                                           decoration: BoxDecoration(
                                             border: Border.all(
                                               width: 1.0,
-                                              color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .surfaceContainerHighest,
                                             ),
-                                            borderRadius: BorderRadius.all(Radius.circular(5.0) //                 <--- border radius here
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(
+                                                    5.0) //                 <--- border radius here
                                                 ),
                                           ),
                                           child: Center(
@@ -596,7 +769,9 @@ class _PopularProductsMenuItemState extends State<PopularProductsMenuItem> {
                                               "${product!.varient[i].cartQty}",
                                               textAlign: TextAlign.center,
                                               style: TextStyle(
-                                                color: Theme.of(context).colorScheme.onSurfaceVariant,
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .onSurfaceVariant,
                                               ),
                                             ),
                                           ),
@@ -606,11 +781,15 @@ class _PopularProductsMenuItemState extends State<PopularProductsMenuItem> {
                                         ),
                                         InkWell(
                                           onTap: () async {
-                                            _qty = product!.varient[i].cartQty! + 1;
+                                            _qty =
+                                                product!.varient[i].cartQty! +
+                                                    1;
 
                                             showOnlyLoaderDialog();
                                             ATCMS? isSuccess;
-                                            isSuccess = await value.addToCart(product, _qty, false, varient: product!.varient[i]);
+                                            isSuccess = await value.addToCart(
+                                                product, _qty, false,
+                                                varient: product!.varient[i]);
                                             if (isSuccess!.isSuccess != null) {
                                               Navigator.of(context).pop();
                                             }
@@ -621,11 +800,15 @@ class _PopularProductsMenuItemState extends State<PopularProductsMenuItem> {
                                               height: 23,
                                               width: 23,
                                               alignment: Alignment.center,
-                                              color: Theme.of(context).colorScheme.primaryContainer,
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .primaryContainer,
                                               child: Icon(
                                                 MdiIcons.plus,
                                                 size: 17,
-                                                color: Theme.of(context).colorScheme.onPrimaryContainer,
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .onPrimaryContainer,
                                               )),
                                         )
                                       ],
@@ -653,7 +836,8 @@ class _ProductsMenuState extends State<ProductsMenu> {
   int? callId;
   List<Product>? categoryProductList;
   APIHelper apiHelper = APIHelper();
-  _ProductsMenuState({this.analytics, this.observer, this.categoryProductList, this.callId});
+  _ProductsMenuState(
+      {this.analytics, this.observer, this.categoryProductList, this.callId});
   Future<bool> addRemoveWishList(int varientId, int index) async {
     bool _isAddedSuccesFully = false;
     try {
@@ -662,11 +846,13 @@ class _ProductsMenuState extends State<ProductsMenu> {
           if (result.status == "1" || result.status == "2") {
             _isAddedSuccesFully = true;
 
-            categoryProductList![index].isFavourite = !categoryProductList![index].isFavourite;
+            categoryProductList![index].isFavourite =
+                !categoryProductList![index].isFavourite;
 
             if (result.status == "2") {
               if (callId == 0) {
-                categoryProductList!.removeWhere((e) => e.varientId == varientId);
+                categoryProductList!
+                    .removeWhere((e) => e.varientId == varientId);
               }
             }
 
@@ -675,13 +861,16 @@ class _ProductsMenuState extends State<ProductsMenu> {
             _isAddedSuccesFully = false;
 
             setState(() {});
-            showSnackBar(snackBarMessage: '${AppLocalizations.of(context)!.txt_please_try_again_after_sometime}');
+            showSnackBar(
+                snackBarMessage:
+                    '${AppLocalizations.of(context)!.txt_please_try_again_after_sometime}');
           }
         }
       });
       return _isAddedSuccesFully;
     } catch (e) {
-      print("Exception - products_menu.dart - addRemoveWishList():" + e.toString());
+      print("Exception - products_menu.dart - addRemoveWishList():" +
+          e.toString());
       return _isAddedSuccesFully;
     }
   }
@@ -696,7 +885,22 @@ class _ProductsMenuState extends State<ProductsMenu> {
         return Padding(
           padding: const EdgeInsets.only(bottom: 8.0),
           child: InkWell(
-            onTap: () => Get.to(() => ProductDescriptionScreen(analytics: widget.analytics, observer: widget.observer, productId: categoryProductList![index].productId)),
+            onTap: () => Get.bottomSheet(
+              SizedBox(
+                height: MediaQuery.of(context).size.height *
+                    0.85, // Covers 50% of the screen height
+                child: ProductDescriptionScreen(
+                  analytics: widget.analytics,
+                  observer: widget.observer,
+                  productId: categoryProductList![index].productId,
+                ),
+              ),
+              isScrollControlled: true,
+              backgroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+              ),
+            ),
             child: PopularProductsMenuItem(
               key: Key('${categoryProductList!.length}'),
               product: categoryProductList![index],

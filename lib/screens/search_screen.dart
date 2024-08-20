@@ -12,7 +12,8 @@ import 'package:user/widgets/chip_menu.dart';
 import 'package:user/widgets/my_text_box.dart';
 
 class SearchScreen extends BaseRoute {
-  SearchScreen({super.analytics, super.observer, super.routeName = 'SearchScreen'});
+  SearchScreen(
+      {super.analytics, super.observer, super.routeName = 'SearchScreen'});
 
   @override
   _SearchScreenState createState() => _SearchScreenState();
@@ -26,7 +27,8 @@ class SearchScreenHeader extends StatefulWidget {
   SearchScreenHeader({required this.textTheme, this.analytics, this.observer});
 
   @override
-  _SearchScreenHeaderState createState() => _SearchScreenHeaderState(textTheme: textTheme, analytics: analytics, observer: observer);
+  _SearchScreenHeaderState createState() => _SearchScreenHeaderState(
+      textTheme: textTheme, analytics: analytics, observer: observer);
 }
 
 class _SearchScreenHeaderState extends State<SearchScreenHeader> {
@@ -34,45 +36,86 @@ class _SearchScreenHeaderState extends State<SearchScreenHeader> {
   dynamic analytics;
   dynamic observer;
   TextEditingController _cSearch = new TextEditingController();
+  List<String> _suggestions = [
+    'Coke',
+    'Coke Zero',
+    'Diet Coke',
+    'Coke Soft Drink',
+    'Cookies',
+  ];
 
   _SearchScreenHeaderState({this.textTheme, this.analytics, this.observer});
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return Column(
       children: [
-        MyTextBox(
-            key: Key('30'),
-            autofocus: false,
-            controller: _cSearch,
-            suffixIcon: Icon(
-              Icons.cancel,
-              color: Theme.of(context).colorScheme.primary,
+        Row(
+          children: [
+            MyTextBox(
+                key: Key('30'),
+                autofocus: false,
+                controller: _cSearch,
+                suffixIcon: Icon(
+                  Icons.cancel,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+                prefixIcon: Icon(
+                  Icons.search_outlined,
+                  color: Theme.of(context).brightness == Brightness.light
+                      ? Colors.grey[800]
+                      : Colors.grey[350],
+                ),
+                hintTexts: [
+                  "${AppLocalizations.of(context)!.hnt_search_product}",
+                  "Search for items",
+                  "Find what you need",
+                ],
+                textCapitalization: TextCapitalization.words,
+                onChanged: (value) {
+                  setState(() {}); // Trigger UI update
+                },
+                onEditingComplete: () {
+                  Get.to(() => SearchResultsScreen(
+                        analytics: widget.analytics,
+                        observer: widget.observer,
+                        searchParams: _cSearch.text.trim(),
+                      ));
+                }),
+            SizedBox(width: 16),
+            TextButton(
+              onPressed: () => Get.back(),
+              child: Text(
+                "${AppLocalizations.of(context)!.lbl_cancel}",
+                style: textTheme!.bodyLarge!.copyWith(
+                  color: Theme.of(context).brightness == Brightness.light
+                      ? Colors.grey[800]
+                      : Colors.grey[350],
+                ),
+              ),
             ),
-            prefixIcon: Icon(
-              Icons.search_outlined,
-              color: Theme.of(context).brightness == Brightness.light ? Colors.grey[800] : Colors.grey[350],
-            ),
-            hintText: "${AppLocalizations.of(context)!.hnt_search_product}",
-            textCapitalization: TextCapitalization.words,
-            onChanged: (value) {},
-            onEditingComplete: () {
-              Get.to(() => SearchResultsScreen(
-                analytics: widget.analytics,
-                observer: widget.observer,
-                searchParams: _cSearch.text.trim(),
-              ));
-            }),
-        SizedBox(width: 16),
-        TextButton(
-          onPressed: () => Get.back(),
-          child: Text(
-            "${AppLocalizations.of(context)!.lbl_cancel}",
-            style: textTheme!.bodyLarge!.copyWith(
-              color: Theme.of(context).brightness == Brightness.light ? Colors.grey[800] : Colors.grey[350],
-            ),
+          ],
+        ),
+        // Display suggestions below the search bar
+        if (_cSearch.text.isNotEmpty)
+          ListView.builder(
+            shrinkWrap: true,
+            itemCount: _suggestions.length,
+            itemBuilder: (context, index) {
+              return ListTile(
+                leading: Icon(Icons.history_outlined),
+                title: Text(_suggestions[index]),
+                onTap: () {
+                  _cSearch.text = _suggestions[index];
+                  Get.to(() => SearchResultsScreen(
+                        analytics: widget.analytics,
+                        observer: widget.observer,
+                        searchParams: _suggestions[index],
+                      ));
+                },
+              );
+            },
           ),
-        )
       ],
     );
   }
@@ -132,14 +175,17 @@ class _SearchScreenState extends BaseRouteState {
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 16.0),
                             child: _isDataLoaded
-                                ? _trendingSearchProducts != null && _trendingSearchProducts!.length > 0
+                                ? _trendingSearchProducts != null &&
+                                        _trendingSearchProducts!.length > 0
                                     ? ChipMenu(
                                         analytics: widget.analytics,
                                         observer: widget.observer,
-                                        trendingSearchProductList: _trendingSearchProducts,
+                                        trendingSearchProductList:
+                                            _trendingSearchProducts,
                                         onChanged: (value) {},
                                       )
-                                    : Text('${AppLocalizations.of(context)!.txt_nothing_to_show}')
+                                    : Text(
+                                        '${AppLocalizations.of(context)!.txt_nothing_to_show}')
                                 : _shimmer1(),
                           ),
                           Padding(
@@ -150,20 +196,28 @@ class _SearchScreenState extends BaseRouteState {
                             ),
                           ),
                           _isDataLoaded
-                              ? _recentSearchList != null && _recentSearchList!.length > 0
+                              ? _recentSearchList != null &&
+                                      _recentSearchList!.length > 0
                                   ? ListView.builder(
                                       itemCount: _recentSearchList!.length,
                                       shrinkWrap: true,
                                       physics: NeverScrollableScrollPhysics(),
                                       itemBuilder: (context, index) => InkWell(
                                         onTap: () {
-                                          Navigator.of(context).push(NavigationUtils.createAnimatedRoute(
-                                              1.0,
-                                              SearchResultsScreen(
-                                                analytics: widget.analytics,
-                                                observer: widget.observer,
-                                                searchParams: _recentSearchList![index].keyword,
-                                              )));
+                                          Navigator.of(context).push(
+                                              NavigationUtils
+                                                  .createAnimatedRoute(
+                                                      1.0,
+                                                      SearchResultsScreen(
+                                                        analytics:
+                                                            widget.analytics,
+                                                        observer:
+                                                            widget.observer,
+                                                        searchParams:
+                                                            _recentSearchList![
+                                                                    index]
+                                                                .keyword,
+                                                      )));
                                         },
                                         child: ListTile(
                                           leading: Icon(
@@ -179,7 +233,8 @@ class _SearchScreenState extends BaseRouteState {
                                         ),
                                       ),
                                     )
-                                  : Text('${AppLocalizations.of(context)!.txt_nothing_to_show}')
+                                  : Text(
+                                      '${AppLocalizations.of(context)!.txt_nothing_to_show}')
                               : _shimmer2()
                         ],
                       ),
@@ -217,7 +272,8 @@ class _SearchScreenState extends BaseRouteState {
         showNetworkErrorSnackBar(_scaffoldKey);
       }
     } catch (e) {
-      print("Exception - search_screen.dart - _getRecentSearchData():" + e.toString());
+      print("Exception - search_screen.dart - _getRecentSearchData():" +
+          e.toString());
     }
   }
 
@@ -260,7 +316,7 @@ class _SearchScreenState extends BaseRouteState {
                         height: 43,
                         child: Card(
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0),
+                            borderRadius: BorderRadius.circular(30.0),
                           ),
                         )),
                     SizedBox(
@@ -268,7 +324,7 @@ class _SearchScreenState extends BaseRouteState {
                         height: 43,
                         child: Card(
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0),
+                            borderRadius: BorderRadius.circular(30.0),
                           ),
                         )),
                     SizedBox(
@@ -276,45 +332,9 @@ class _SearchScreenState extends BaseRouteState {
                         height: 43,
                         child: Card(
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0),
-                          ),
-                        ))
-                  ],
-                )),
-            SizedBox(
-                height: 43,
-                width: MediaQuery.of(context).size.width,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    SizedBox(
-                        width: MediaQuery.of(context).size.width / 3.3,
-                        height: 43,
-                        child: Card(
-                          elevation: 0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0),
+                            borderRadius: BorderRadius.circular(30.0),
                           ),
                         )),
-                    SizedBox(
-                        width: MediaQuery.of(context).size.width / 3.3,
-                        height: 43,
-                        child: Card(
-                          elevation: 0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0),
-                          ),
-                        )),
-                    SizedBox(
-                        width: MediaQuery.of(context).size.width / 3.3,
-                        height: 43,
-                        child: Card(
-                          elevation: 0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0),
-                          ),
-                        ))
                   ],
                 )),
           ],
@@ -322,19 +342,28 @@ class _SearchScreenState extends BaseRouteState {
   }
 
   _shimmer2() {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Shimmer.fromColors(
-          baseColor: Colors.grey[300]!,
-          highlightColor: Colors.grey[100]!,
-          child: ListView.builder(
-              shrinkWrap: true,
-              itemCount: 5,
-              scrollDirection: Axis.vertical,
-              itemBuilder: (BuildContext context, int index) {
-                return SizedBox(height: 60, width: MediaQuery.of(context).size.width, child: Card());
-              })),
-    );
+    return Shimmer.fromColors(
+        baseColor: Colors.grey[300]!,
+        highlightColor: Colors.grey[100]!,
+        child: Column(
+          children: [
+            SizedBox(
+              width: double.infinity,
+              height: 20.0,
+              child: Card(),
+            ),
+            SizedBox(
+              width: double.infinity,
+              height: 20.0,
+              child: Card(),
+            ),
+            SizedBox(
+              width: double.infinity,
+              height: 20.0,
+              child: Card(),
+            ),
+          ],
+        ));
   }
 
   _showTrendingSearchProducts() async {
@@ -346,7 +375,6 @@ class _SearchScreenState extends BaseRouteState {
             if (result.status == "1") {
               _trendingSearchProducts = result.data;
             } else {
-              showSnackBar(key: _scaffoldKey, snackBarMessage: result.message);
               _trendingSearchProducts = null;
             }
           }
@@ -355,7 +383,8 @@ class _SearchScreenState extends BaseRouteState {
         showNetworkErrorSnackBar(_scaffoldKey);
       }
     } catch (e) {
-      print("Exception - search_screen.dart - _getRecentSearchData():" + e.toString());
+      print("Exception - search_screen.dart - _showTrendingSearchProducts():" +
+          e.toString());
     }
   }
 }

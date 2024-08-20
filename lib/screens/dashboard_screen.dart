@@ -120,17 +120,10 @@ class _DashboardScreenState extends BaseRouteState {
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(
-                            // vertical: 16.0,
                             horizontal: 16,
                           ),
                           child: MyTextBox(
-                            key: Key('30'),
                             autofocus: false,
-                            // controller: _cSearch,
-                            // suffixIcon: Icon(
-                            //   Icons.cancel,
-                            //   color: Theme.of(context).colorScheme.primary,
-                            // ),
                             prefixIcon: Icon(
                               Icons.search_outlined,
                               color: Theme.of(context).brightness ==
@@ -142,17 +135,12 @@ class _DashboardScreenState extends BaseRouteState {
                                   analytics: widget.analytics,
                                   observer: widget.observer,
                                 )),
-                            hintText:
-                                "${AppLocalizations.of(context)!.hnt_search_product}",
+                            hintTexts: [
+                              "${AppLocalizations.of(context)!.hnt_search_product}",
+                              "Search for items",
+                              "Find what you need",
+                            ],
                             textCapitalization: TextCapitalization.words,
-                            // onChanged: (value) {},
-                            // onEditingComplete: () {
-                            //   Get.to(() => SearchResultsScreen(
-                            //         analytics: widget.analytics,
-                            //         observer: widget.observer,
-                            //         searchParams: _cSearch.text.trim(),
-                            //       ));
-                            // },
                           ),
                         ),
                         // (snapshot.data?.banner.isNotEmpty ?? false) ?
@@ -363,14 +351,30 @@ class _DashboardScreenState extends BaseRouteState {
     List<Widget> list = [];
     for (int i = 0; i < homeScreenData.secondBanner.length; i++) {
       list.add(InkWell(
-        onTap: () {
-          Get.to(() => ProductDescriptionScreen(
-                analytics: widget.analytics,
-                observer: widget.observer,
-                productId: homeScreenData.secondBanner[i].varientId,
-                screenId: 0,
-              ));
-        },
+        // onTap: () {
+        //   Get.to(() => ProductDescriptionScreen(
+        //         analytics: widget.analytics,
+        //         observer: widget.observer,
+        //         productId: homeScreenData.secondBanner[i].varientId,
+        //         screenId: 0,
+        //       ));
+        // },
+        onTap: () => Get.bottomSheet(
+          SizedBox(
+            height: MediaQuery.of(context).size.height *
+                0.85, // Covers 50% of the screen height
+            child: ProductDescriptionScreen(
+              analytics: widget.analytics,
+              observer: widget.observer,
+              productId: homeScreenData.secondBanner[i].varientId,
+            ),
+          ),
+          isScrollControlled: true,
+          backgroundColor: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+          ),
+        ),
         child: CachedNetworkImage(
           imageUrl: global.appInfo!.imageUrl! +
               homeScreenData.secondBanner[i].bannerImage!,
