@@ -40,7 +40,7 @@ class _SplashScreenState extends BaseRouteState {
               opacity: _opacity,
               duration: Duration(seconds: 1),
               child: Image.asset(
-                'assets/images/icon.png',
+                'assets/images/iconnew.png',
                 fit: BoxFit.contain,
                 scale: 2,
               ),
